@@ -1,0 +1,13 @@
+---
+version: "3.5"
+
+services:
+  neo4j-server:
+    environment:
+      - NEO4J_AUTH=none
+    image: "neo4j:latest"
+    volumes:
+      - ./db-seed:/db-seed
+    ports: 
+      - 7474:7474
+      - 7687:7687
