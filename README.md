@@ -9,15 +9,28 @@ use a flag -d se quiser que rode em segundo plano.
 
 Foi retirada a senha através da variável de ambiente no _docker-compose.yaml_ para testes facilitados.
 
-Verificando a documentação de apoio, assume-se que deve ser usada a informação _:play intro-neo4j-exercise_ como modelo de dados para os exercícios.
+Verificando a documentação de apoio, assume-se que deve ser usada a informação _:play movie-graph_ como modelo de dados para os exercícios.
 
 
 ## Exercício 1- Retrieving Nodes 
 
 1. Retrieve all nodes from the database.
+```
+$ MATCH (node) RETURN node
+```
+
 2. Examine the data model for the graph.
+![todos os nós](images/all_nodes.PNG)
+
 3. Retrieve all Person nodes.
+```
+$ MATCH (node:Person) RETURN node
+```
+
 4. Retrieve all Movie nodes. 
+```
+$ MATCH (node:Movie) RETURN node
+```
 
 
 ## Exercício 2 – Filtering queries using property values 
