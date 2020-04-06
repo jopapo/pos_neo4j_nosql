@@ -36,20 +36,60 @@ $ MATCH (node:Movie) RETURN node
 ## Exercício 2 – Filtering queries using property values 
 
 1. Retrieve all movies that were released in a specific year.
+```
+$ MATCH (node:Movie {released: 1999}) RETURN node
+```
+
 2. View the retrieved results as a table.
+![filmes de 1999 como tabela](images/1999_movies_as_table.PNG)
+
 3. Query the database for all property keys.
+```
+$ CALL db.propertyKeys
+```
+
 4. Retrieve all Movies released in a specific year, returning their titles.
+```
+$ MATCH (node:Movie {released: 1999}) RETURN node.title
+```
+
 5. Display title, released, and tagline values for every Movie node in the graph.
+```
+$ MATCH (node:Movie {released: 1999}) RETURN node.title, node.tagline, node.released
+```
+
 6. Display more user-friendly headers in the table
+```
+$ MATCH (node:Movie {released: 1999}) RETURN node.title AS `Título`, node.tagline AS `Subtítulo`, node.released AS `Lançado em`
+```
 
 
 ## Exercício 3 - Filtering queries using relationships 
 
 1. Display the schema of the database.
+```
+$ CALL db.schema.visualization()
+```
+
 2. Retrieve all people who wrote the movie Speed Racer.
+```
+$ MATCH (p:Person)-[rel:WROTE]->(m:Movie {title: 'Speed Racer'}) RETURN p, rel, m
+```
+
 3. Retrieve all movies that are connected to the person, Tom Hanks.
+```
+$ MATCH (p:Person {name: 'Tom Hanks'})-[rel]->(m:Movie) RETURN p, rel, m
+```
+
 4. Retrieve information about the relationships Tom Hanks had with the set of movies retrieved earlier.
+```
+$ MATCH (p:Person {name: 'Tom Hanks'})-[rel]->(m:Movie) RETURN p.name, type(rel), m.title
+```
+
 5. Retrieve information about the roles that Tom Hanks acted in. 
+```
+$ MATCH (p:Person {name: 'Tom Hanks'})-[rel:ACTED_IN]->(m:Movie) RETURN p.name, type(rel), m.title
+```
 
 
 ## Exercício 4 – Filtering queries using WHERE clause 
