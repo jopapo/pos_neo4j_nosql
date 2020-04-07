@@ -95,18 +95,69 @@ $ MATCH (p:Person {name: 'Tom Hanks'})-[rel:ACTED_IN]->(m:Movie) RETURN p.name, 
 ## Exercício 4 – Filtering queries using WHERE clause 
 
 1. Retrieve all movies that Tom Cruise acted in. 
+```
+$ MATCH (p:Person {name: 'Tom Cruise'})-[r:ACTED_IN]->(m:Movie) RETURN p, r, m
+```
+
 2. Retrieve all people that were born in the 70’s. 
+```
+$ MATCH (p:Person) WHERE 1970 <= p.born <= 1979 RETURN p
+```
+
 3. Retrieve the actors who acted in the movie The Matrix who were born after 1960. 
+```
+$ MATCH (p:Person)-[r:ACTED_IN]->(m:Movie {title: 'The Matrix'}) WHERE p.born >= 1960 RETURN p, r, m
+```
+
 4. Retrieve all movies by testing the node label and a property. 
+```
+$ MATCH (m:Movie {released: 1999}) WHERE m.title STARTS WITH 'The ' RETURN m
+```
+
 5. Retrieve all people that wrote movies by testing the relationship between two nodes. 
+```
+$ MATCH (p:Person)-[r]->(m:Movie) WHERE type(r) = 'WROTE' RETURN p, r, m
+```
+
 6. Retrieve all people in the graph that do not have a property. 
+```
+$ MATCH (p:Person) WHERE NOT exists(p.city) RETURN p
+```
+
 7. Retrieve all people related to movies where the relationship has a property. 
+```
+$ MATCH (p:Person)-[r]->(m:Movie) WHERE exists(r.rating) RETURN p
+```
+
 8. Retrieve all actors whose name begins with James. 
+```
+$ MATCH (p:Person)-[r]->(m:Movie) WHERE p.name STARTS WITH 'James' RETURN p
+```
+
 9. Retrieve all all REVIEW relationships from the graph with filtered results. 
+```
+$ MATCH (p:Person)-[r]->(m:Movie) WHERE type(r) = 'REVIEWED' RETURN r
+```
+
 10. Retrieve all people who have produced a movie, but have not directed a movie. 
+```
+$ MATCH (p:Person)-[r:PRODUCED]->(m:Movie) WHERE NOT exists( (p)-[:DIRECTED]->(m) ) RETURN p
+```
+
 11. Retrieve the movies and their actors where one of the actors also directed the movie. 
+```
+$ MATCH (p:Person)-[r:ACTED_IN]->(m:Movie) WHERE exists( (p)-[:DIRECTED]->(m) ) RETURN p, r, m
+```
+
 12. Retrieve all movies that were released in a set of years. 
+```
+$ MATCH (m:Movie) WHERE m.released in [1999,1990] RETURN m
+```
+
 13. Retrieve the movies that have an actor’s role that is the name of the movie. 
+```
+$ MATCH (p:Person)-[r:ACTED_IN]->(m:Movie) WHERE m.title in r.roles RETURN p, r, m
+```
 
 
 ## Exercício 5 – Controlling query processing 
@@ -122,6 +173,7 @@ $ MATCH (p:Person {name: 'Tom Hanks'})-[rel:ACTED_IN]->(m:Movie) RETURN p.name, 
 10. Retrieve nodes and their relationships as lists. 
 11. Retrieve the actors who have acted in exactly five movies. 
 12. Retrieve the movies that have at least 2 directors with other optional data. 
+
 
 ## Exercício 6 – Controlling results returned 
 
