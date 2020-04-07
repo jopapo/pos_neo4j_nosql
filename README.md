@@ -163,16 +163,71 @@ $ MATCH (p:Person)-[r:ACTED_IN]->(m:Movie) WHERE m.title in r.roles RETURN p, r,
 ## Exercício 5 – Controlling query processing 
 
 1. Retrieve data using multiple MATCH patterns. 
+```
+$ MATCH (a:Person)-[:ACTED_IN]->(m:Movie),
+	(m:Movie)<-[:DIRECTED]-(d:Person) 
+RETURN a.name, m.title, d.name
+```
+
 2. Retrieve particular nodes that have a relationship. 
+```
+$ MATCH (a:Movie), (p:Person) WHERE exists((p)--(a)) RETURN a, p
+```
+
 3. Modify the query to retrieve nodes that are exactly three hops away. 
+```
+$ MATCH p = (a:Person)-[*3]->(b:Movie) RETURN p
+```
+
 4. Modify the query to retrieve nodes that are one and two hops away. 
+```
+$ MATCH p = (a:Person)-[*1..2]->(b:Movie) RETURN p
+```
+
 5. Modify the query to retrieve particular nodes that are connected no matter how many hops are required. 
+```
+$ MATCH p = shortestPath((a:Person {name:'Keanu Reeves'})-[*]-(b:Person {name:'Natalie Portman'})) RETURN p
+```
+
 6. Specify optional data to be retrieved during the query. 
+```
+$ MATCH p = shortestPath((a:Person {name:'Keanu Reeves'})-[*]-(b:Person {name:'Natalie Portman'})) 
+OPTIONAL MATCH (a)-[r:ACTED_IN]->(m:Movie)
+RETURN p, m
+```
+
 7. Retrieve nodes by collecting a list. 
+```
+$ MATCH (p:Person)-[:ACTED_IN]->(m:Movie) WHERE p.name ='Keanu Reeves' RETURN collect(m.title)
+```
+
+Obs.: Não tinha questão 8 no documento de atividades.
+
 9. Retrieve nodes as lists and return data associated with the corresponding lists.
+```
+$ MATCH (p:Person)-[:ACTED_IN]->(m:Movie) WHERE p.name STARTS WITH 'K' RETURN p.name, collect(m.title)
+```
+
 10. Retrieve nodes and their relationships as lists. 
+```
+$ MATCH (p:Person)-[r:ACTED_IN]->(m:Movie) WHERE p.name STARTS WITH 'K' RETURN p.title, collect(m.title), collect(r.roles)
+```
+
 11. Retrieve the actors who have acted in exactly five movies. 
+```
+$ MATCH (a:Person)-[:ACTED_IN]->(m:Movie) 
+WITH  a, count(a) AS numMovies, collect(m.title) as movies 
+WHERE numMovies = 5
+RETURN a.name, numMovies, movies
+```
+
 12. Retrieve the movies that have at least 2 directors with other optional data. 
+```
+$ MATCH (a:Person)-[:DIRECTED]->(m:Movie) 
+WITH  m, count(m) AS numDirectors, collect(a.name) as directors
+WHERE numDirectors >= 2
+RETURN m.title, numDirectors, directors
+```
 
 
 ## Exercício 6 – Controlling results returned 
