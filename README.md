@@ -233,11 +233,40 @@ RETURN m.title, numDirectors, directors
 ## Exercício 6 – Controlling results returned 
 
 1. Execute a query that returns duplicate records. 
+```
+$ MATCH (a:Person)-[:DIRECTED]->(m:Movie) RETURN a.name
+```
+
 2. Modify the query to eliminate duplication. 
+```
+$ MATCH (a:Person)-[:DIRECTED]->(m:Movie) RETURN DISTINCT a.name
+```
+
 3. Modify the query to eliminate more duplication. 
+```
+$ MATCH (a:Person)-[:DIRECTED]->(m:Movie) WITH DISTINCT a RETURN a
+```
+
 4. Sort results returned. 
+```
+$ MATCH (a:Person)-[:DIRECTED]->(m:Movie) 
+WITH DISTINCT a RETURN a ORDER BY a.name
+```
+
 5. Retrieve the top 5 ratings and their associated movies. 
+```
+$ MATCH (a:Person)-[r:REVIEWED]->(m:Movie)
+RETURN m.title, r.rating ORDER BY r.rating DESC LIMIT 5
+```
+
 6. Retrieve all actors that have not appeared in more than 3 movies. 
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WITH a.name as actor, count(r) AS countAppearances, collect(m.title) as movies
+WHERE countAppearances <= 3
+RETURN actor, countAppearances, movies
+ORDER BY countAppearances DESC
+```
 
 
 ## Exercício 7 – Working with cypher data  
