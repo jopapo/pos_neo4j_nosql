@@ -486,8 +486,48 @@ RETURN a.name, r
 ## Exercício 10 – Deleting nodes and relationships  
 
 1. Delete a relationship. 
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+DELETE r
+```
+
 2. Confirm that the relationship has been deleted.
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+RETURN a, r, m
+```
+
 3. Retrieve a movie and all of its relationships. 
+```
+$ MATCH (x:Movie)<-[r]-(p:Person)
+WHERE x.title = 'The Matrix'
+RETURN x, r, p
+```
+
 4. Try deleting a node without detaching its relationships. 
+```
+$ MATCH (x:Person)-[r]->(m:Movie)
+WHERE x.name = 'João'
+DELETE x
+RETURN x, r, m
+
+** ERROR: Cannot delete node<172>, because it still has relationships. To delete this node, you must first delete its relationships. **
+```
+
 5. Delete a Movie node, along with its relationships. 
+```
+$ MATCH (x:Person)-[r]->(m:Movie)
+WHERE m.title = 'Matrix 4'
+DETACH DELETE m
+RETURN x, r, m
+```
+
 6. Confirm that the Movie node has been deleted. 
+```
+$ MATCH (x:Person)-[r]->(m:Movie)
+WHERE m.title = 'Matrix 4'
+RETURN x, r, m
+```
+Retorno vazio.
