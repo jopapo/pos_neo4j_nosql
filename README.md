@@ -272,9 +272,33 @@ ORDER BY countAppearances DESC
 ## Exercício 7 – Working with cypher data  
 
 1. Collect and use lists. 
+```
+$ MATCH (a:Person)-[r:REVIEWED]->(m:Movie) 
+WITH  a, count(m) AS numReviews, collect(m.title) as reviews, avg(r.rating) AS avgRating
+RETURN a.name, reviews, numReviews, avgRating
+ORDER BY size(reviews)
+```
+
 2. Collect a list. 
+```
+$ WITH ['a', 'e', 'i', 'o', 'u'] AS vogals RETURN collect(vogals)
+```
+
 3. Unwind a list. 
+```
+$ WITH ['a', 'e', 'i', 'o', 'u'] AS vogals
+UNWIND vogals as vogal
+RETURN vogal, vogals
+```
+
 4. Perform a calculation with the date type. 
+```
+$ MATCH (p:Person)-[:ACTED_IN]->(m:Movie) 
+WHERE exists(p.born) 
+  AND exists(m.released)
+RETURN p.name, m.title, m.released - p.born as AgeInMovie, date().year - p.born as AgeToday
+ORDER BY AgeInMovie
+```
 
 
 ## Exercício 8 – Creating nodes 
