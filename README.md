@@ -393,18 +393,94 @@ Mesma resposta da 14.
 ## Exercício 9 – Creating relationships  
 
 1. Create ACTED_IN relationships.
+```
+$ MATCH (a:Person), (m:Movie) 
+WHERE a.name = 'João' 
+AND m.title = 'The Matrix'
+CREATE (a)-[:ACTED_IN {roles: ['The Architect']}]->(m)
+RETURN a, m
+```
+
 2. Create DIRECTED relationships. 
-3. Create a HELPED relationship. 
+```
+$ MATCH (a:Person), (m:Movie) 
+WHERE a.name = 'João' 
+AND m.title = 'Top Gun'
+CREATE (a)-[:DIRECTED]->(m)
+RETURN a, m
+```
+
+3. Create a HELPED relationship.
+```
+$ MATCH (a:Person), (m:Movie) 
+WHERE a.name = 'João' 
+AND m.title = 'Twister'
+CREATE (a)-[:HELPED]->(m)
+RETURN a, m
+```
+
 4. Query nodes and new relationships. 
+```
+$ MATCH (a:Person {name: 'João'})-[r]->(m:Movie) RETURN a, r, m
+```
+
 5. Add properties to relationships. 
+```
+$ MATCH (a:Person {name: 'João'})-[r]->(m:Movie)
+SET r.new = true
+RETURN a, r, m
+```
+
 6. Add a property to the HELPED relationship. 
+```
+$ MATCH (a:Person {name: 'João'})-[r:HELPED]->(m:Movie)
+SET r.what = ['fetch coffee', 'buy condoms']
+RETURN a, r, m
+```
+
 7. View the current list of property keys in the graph. 
+![Lista de propriedades dos nós](images/properties_graph.png)
+
 8. View the current schema of the graph. 
-9. Retrieve the names and roles for actors. 
+![Esquema do grafo](images/schema_new_relationships.png)
+
+9. Retrieve the names and roles for actors.
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+UNWIND r.roles as role
+WITH a, collect(DISTINCT role) as roles
+RETURN a.name, roles
+```
+
 10. Retrieve information about any specific relationships.
-11. Modify a property of a relationship. 
-12. Remove a property from a relationship. 
-13. Confirm that your modifications were made to the graph. 
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+RETURN a.name, r
+```
+
+11. Modify a property of a relationship.
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+SET r.new = false
+RETURN a.name, r
+```
+
+12. Remove a property from a relationship.
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+REMOVE r.new
+RETURN a.name, r
+```
+
+13. Confirm that your modifications were made to the graph.
+```
+$ MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE a.name = 'João'
+RETURN a.name, r
+```
 
 
 ## Exercício 10 – Deleting nodes and relationships  
