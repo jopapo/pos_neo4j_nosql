@@ -304,23 +304,90 @@ ORDER BY AgeInMovie
 ## Exercício 8 – Creating nodes 
 
 1. Create a Movie node. 
+```
+$ CREATE (:Movie {title: 'Matrix 4'}) 
+```
+
 2. Retrieve the newly-created node. 
+```
+$ MATCH (m:Movie {title: 'Matrix 4'}) RETURN m
+```
+
 3. Create a Person node. 
+```
+$ CREATE (:Person {name: 'João', born:1983})
+```
+
 4. Retrieve the newly-created node. 
+```
+$ MATCH (p:Person {name: 'João'}) RETURN p
+```
+
 5. Add a label to a node. 
+```
+$ MATCH (p:Person {name: 'João'}) SET p:Male RETURN p
+```
+
 6. Retrieve the node using the new label. 
+```
+$ MATCH (p:Person:Male) RETURN p
+```
+
 7. Add the Female label to selected nodes. 
+```
+$ MATCH (p:Person) WHERE p.name STARTS WITH 'Di' SET p:Female RETURN p
+```
+
 8. Retrieve all Female nodes. 
+```
+$ MATCH (p:Person:Female) RETURN p
+```
+
 9. Remove the Female label from the nodes that have this label. 
+```
+$ MATCH (p:Person:Female) REMOVE p:Female RETURN p
+```
+
 10. View the current schema of the graph. 
+```
+$ CALL db.schema.visualization()
+```
+
 11. Add properties to a movie. 
+```
+$ MATCH (m:Movie {title: 'The Matrix'}) SET m.blockbuster = true RETURN m
+```
+
 12. Retrieve an OlderMovie node to confirm the label and properties. 
+```
+$ MATCH (m:Movie {title: 'The Matrix'}) RETURN m
+```
+
 13. Add properties to the person, Robin Wright. 
+```
+$ MATCH (x:Person {name: 'Keanu Reeves'}) SET x.sad = true RETURN x
+```
+
 14. Retrieve an updated Person node. 
-15. Remove a property from a Movie node. 
+```
+$ MATCH (x:Person {name: 'Keanu Reeves'}) RETURN x
+```
+
+15. Remove a property from a Movie node.
+```
+$ MATCH (m:Movie {title: 'The Matrix'}) REMOVE m.blockbuster RETURN m
+```
+
 16. Retrieve the node to confirm that the property has been removed. 
+Mesma resposta da 12.
+
 17. Remove a property from a Person node. 
+```
+$ MATCH (x:Person {name: 'Keanu Reeves'}) REMOVE x.sad RETURN x
+```
+
 18. Retrieve the node to confirm that the property has been removed. 
+Mesma resposta da 14.
 
 
 ## Exercício 9 – Creating relationships  
